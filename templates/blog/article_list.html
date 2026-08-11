@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<h1>Articles</h1>
+
+{% if articles %}
+ <ul>
+   {% for a in articles %}
+     <li>
+       <a href="{% url 'article_detail' a.slug %}">{{ a.title }}</a>
+       {% if a.author %}<small> — {{ a.author.username }}</small>{% endif %}
+     </li>
+   {% endfor %}
+ </ul>
+{% else %}
+ <p>Hali maqola yo‘q.</p>
+{% endif %}
+{% endblock %}
+
+
