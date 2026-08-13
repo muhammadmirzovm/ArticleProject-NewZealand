@@ -1,18 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ article.title }}</h1>
-
-{% if article.author %}
- <p><small>Muallif: {{ article.author.username }}</small></p>
-{% endif %}
-<p><small>{{ article.created_at }}</small></p>
-
-<hr>
-<p>{{ article.content }}</p>
-
-<p><a href="{% url 'article_list' %}">Orqaga</a></p>
+<div class="row">
+    <div class="col-4">
+          {% if article.image %}
+  <img src="{{ article.image.url }}" class="card-img-top w-100" alt="...">
+  {% else %}
+  <img src="{%static 'images/article.png' %}" class="card-img-top w-100" alt="...">
+  {% endif %}
+    </div>
+    <div class="col">
+        <h1>{{ article.title }}</h1>
+        <p>{{ article.content }}</p>
+        <div class="d-flex align-items-center">
+            <span class="badge text-bg-secondary me-4">{{ article.created_at }}</span>
+            <span class="badge text-bg-secondary">Author: {{ article.author }}</span>
+        </div>
+        <a class="btn btn-primary my-5" href="{% url 'article_list' %}">Orqaga</a>
+    </div>
+</div>
 {% endblock %}
 
 

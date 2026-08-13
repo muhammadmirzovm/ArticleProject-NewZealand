@@ -1,21 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Articles{% endblock %}
-
+{% load static %}
+{% block title %}Maqolalar{% endblock %}
 {% block content %}
-<h1>Articles</h1>
+<h1 class="text-center">Maqolalar ro'yxati</h1>
+<div class="row">
+{% for article in articles %}
+      <div class="col-3">
+    <div class="card" >
+        {% if article.image %}
+  <img src="{{ article.image.url }}" class="card-img-top w-100" alt="...">
+  {% else %}
+  <img src="{%static 'images/article.png' %}" class="card-img-top w-100" alt="...">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ article.title }}</h5>
+    <p class="card-text">{{ article.content | truncatechars:100 }}</p>
+    <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary">Detail Page</a>
+    <small style="font-size: 10px; text-decoration:underline;">{{ article.created_at }}</small>
+  </div>
+</div>
+  </div>
+{%endfor %}
+</div>
 
-{% if articles %}
- <ul>
-   {% for a in articles %}
-     <li>
-       <a href="{% url 'article_detail' a.slug %}">{{ a.title }}</a>
-       {% if a.author %}<small> — {{ a.author.username }}</small>{% endif %}
-     </li>
-   {% endfor %}
- </ul>
-{% else %}
- <p>Hali maqola yo‘q.</p>
-{% endif %}
-{% endblock %}
+{% endblock content %}
 
 
