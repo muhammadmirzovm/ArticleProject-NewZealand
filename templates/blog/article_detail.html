@@ -18,7 +18,17 @@
             <span class="badge text-bg-secondary me-4">{{ article.created_at }}</span>
             <span class="badge text-bg-secondary">Author: {{ article.author }}</span>
         </div>
-        <a class="btn btn-primary my-5" href="{% url 'article_list' %}">Orqaga</a>
+        
+        {% if user.is_authenticated and article.author == user %}
+        <p class="my-5">
+            <a class="btn btn-warning" href="{% url 'article_edit' article.slug %}">Tahrirlash</a> 
+            <a class="btn btn-danger" href="{% url 'article_delete' article.slug %}">O'chirish</a>
+        </p>
+        {% endif %}
+
+        <div class="text-center">
+            <a class="btn btn-secondary my-5" href="{% url 'article_list' %}">Orqaga</a>
+        </div>
     </div>
 </div>
 {% endblock %}
