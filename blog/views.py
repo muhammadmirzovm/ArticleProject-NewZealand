@@ -3,9 +3,24 @@ from .models import Article
 from django.contrib.auth.decorators import login_required
 from .forms import ArticleForm
 from django.http import HttpResponseForbidden
+from django.db.models import Q
+
 def article_list(request):
-   articles = Article.objects.all().order_by("-created_at")
-   return render(request, "blog/article_list.html", {"articles": articles})
+   articles = Article.objects.all()
+   q = request.GET.get("q")
+   if q:
+       articles = articles.filter(
+           Q(title__icontains=q) | Q(content__icontains=q)
+       )
+   mine = request.GET.get("mine")
+   if mine == "1" and request.user.is_authenticated:
+       articles = articles.filter(author=request.user)
+   articles = articles.order_by("-created_at")
+   return render(request, "blog/article_list.html", {
+       "articles": articles,
+       "q": q,
+       "mine": mine,
+   })
 
 def article_detail(request, slug):
    article = get_object_or_404(Article, slug=slug)
